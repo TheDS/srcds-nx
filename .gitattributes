@@ -1,5 +1,9 @@
+public/CDetour/detourhelpers.h linguist-language=C++
+public/amtl/am-cxx.h linguist-language=C++
 public/libudis86/* linguist-vendored
 public/lzma/* linguist-vendored
-public/minz/* linguist-vendored
+public/miniz/* linguist-vendored
 public/url_fopen/* linguist-vendored
+srcds-cli/macos/cocoa_helpers.h linguist-language=C++
+srcds-cli/macos/stringutil.h linguist-language=C++
 srcds-updater/macos/Frameworks/SparkleCore.framework/* linguist-vendored
