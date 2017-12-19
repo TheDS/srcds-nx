@@ -40,14 +40,14 @@ enum class ManifestType;
 using namespace ke;
 
 enum class SteamUniverse {
-	Steam_Public,
-	Steam_PublicBeta
+	Public,
+	PublicBeta
 };
 
 enum class ManifestType {
-	Manifest_Default = -1,
-	Manifest_InstallList,
-	Manifest_Url
+	Default = -1,
+	InstallList,
+	Url
 };
 
 struct ManifestEntry_t

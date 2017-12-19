@@ -90,7 +90,7 @@ void SteamLibUpdater::Update(SteamUniverse universe) {
 	DeleteOldFiles();
 
 	chdir("package");
-	FILE *outFile = fopen(GetManifestName(universe_, ManifestType::Manifest_Default), "wb");
+	FILE *outFile = fopen(GetManifestName(universe_, ManifestType::Default), "wb");
 	if (!outFile) {
 		printf("Failed to write steam manifest file\n");
 		return;
@@ -168,7 +168,7 @@ bool SteamLibUpdater::IsUpdateAvailable(SteamUniverse universe, URL_FILE * &mani
 	else
 		printf("Installed version: None\n");
 
-	manifest = url_fopen(GetManifestName(universe_, ManifestType::Manifest_Url), "r");
+	manifest = url_fopen(GetManifestName(universe_, ManifestType::Url), "r");
 
 	if (!manifest) {
 		printf("Failed to download Steam manifest!\n");
@@ -216,7 +216,7 @@ bool SteamLibUpdater::IsUpdateAvailable(SteamUniverse universe, URL_FILE * &mani
 }
 
 void SteamLibUpdater::ParseManifests() {
-	FILE *currentManifest = fopen(GetManifestName(universe_, ManifestType::Manifest_Default), "rt");
+	FILE *currentManifest = fopen(GetManifestName(universe_, ManifestType::Default), "rt");
 
 	if (!currentManifest)
 		return;
@@ -267,7 +267,7 @@ void SteamLibUpdater::ParseManifests() {
 
 	fclose(currentManifest);
 
-	FILE *installList = fopen(GetManifestName(universe_, ManifestType::Manifest_InstallList), "rt");
+	FILE *installList = fopen(GetManifestName(universe_, ManifestType::InstallList), "rt");
 
 	if (!installList)
 		return;
@@ -612,7 +612,7 @@ void SteamLibUpdater::ExtractFiles(LinkedList<AString> &files) {
 	}
 
 	chdir("package");
-	FILE *installManifest = fopen(GetManifestName(universe_, ManifestType::Manifest_InstallList), "w+");
+	FILE *installManifest = fopen(GetManifestName(universe_, ManifestType::InstallList), "w+");
 
 	for (InstallEntry_t e : list) {
 		fprintf(installManifest, "%s,%lld;%ld;%u\n", e.filename.chars(), e.size, e.timestamp, e.crc);
@@ -647,7 +647,7 @@ void SteamLibUpdater::ExtractFiles(LinkedList<AString> &files) {
 
 void SteamLibUpdater::WriteInstallList(LinkedList<InstallEntry_t> &list) {
 	chdir("package");
-	FILE *installManifest = fopen(GetManifestName(universe_, ManifestType::Manifest_InstallList), "w+");
+	FILE *installManifest = fopen(GetManifestName(universe_, ManifestType::InstallList), "w+");
 
 	for (InstallEntry_t e : list) {
 		fprintf(installManifest, "%s,%lld;%ld;%u\n", e.filename.chars(), e.size, e.timestamp, e.crc);
@@ -682,22 +682,22 @@ void SteamLibUpdater::WriteInstallList(LinkedList<InstallEntry_t> &list) {
 
 constexpr const char *SteamLibUpdater::GetManifestName(SteamUniverse universe, ManifestType type) {
 	switch (universe) {
-		case SteamUniverse::Steam_Public:
+		case SteamUniverse::Public:
 			switch (type) {
-				case ManifestType::Manifest_Default:
+				case ManifestType::Default:
 					return STEAM_MANIFEST_RELEASE EXT_MANIFEST;
-				case ManifestType::Manifest_InstallList:
+				case ManifestType::InstallList:
 					return STEAM_MANIFEST_RELEASE EXT_INSTALL;
-				case ManifestType::Manifest_Url:
+				case ManifestType::Url:
 					return BASE_URL STEAM_MANIFEST_RELEASE;
 			}
-		case SteamUniverse::Steam_PublicBeta:
+		case SteamUniverse::PublicBeta:
 			switch (type) {
-				case ManifestType::Manifest_Default:
+				case ManifestType::Default:
 					return STEAM_MANIFEST_BETA EXT_MANIFEST;
-				case ManifestType::Manifest_InstallList:
+				case ManifestType::InstallList:
 					return STEAM_MANIFEST_BETA EXT_INSTALL;
-				case ManifestType::Manifest_Url:
+				case ManifestType::Url:
 					return BASE_URL STEAM_MANIFEST_RELEASE;
 			}
 	}

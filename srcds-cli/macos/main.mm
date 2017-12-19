@@ -157,7 +157,7 @@ int main(int argc, char **argv) {
 
 	{
 		SteamLibUpdater updater;
-		updater.Update(SteamUniverse::Steam_Public);
+		updater.Update(SteamUniverse::Public);
 	}
 
 	GameDetector detector = GameDetector::GetInstance(argc, argv);

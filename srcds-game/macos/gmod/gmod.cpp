@@ -201,7 +201,7 @@ bool GarrysMod::PostLoadModules(void *appSystemGroup) {
 const char *GarrysMod::GetAddSearchPath(PatternType &type, size_t &len,
                                         AddSearchPathType &prototype) {
 	static const char sym[] = "_ZN15CBaseFileSystem13AddSearchPathEPKcS1_j";
-	type = PatternType::Pattern_Symbol;
+	type = PatternType::Symbol;
 	len = sizeof(sym) - 1;
 	prototype = AddSearchPathType::StringStringInt;
 	return sym;

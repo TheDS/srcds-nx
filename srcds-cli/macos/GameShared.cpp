@@ -131,11 +131,11 @@ DETOUR_DECL_MEMBER1(CSys_LoadModules, bool, void *, appSystemGroup) {
 	void *searchPathFn = nullptr;
 
 	switch (type) {
-		case PatternType::Pattern_Default:
+		case PatternType::Default:
 			searchSym = "_ZN15CBaseFileSystem13AddSearchPathEPKcS1_15SearchPathAdd_t";
 			altSearchSym = "_ZN15CBaseFileSystem13AddSearchPathEPKcS1_15SearchPathAdd_tb";
 			[[fallthrough]];
-		case PatternType::Pattern_Symbol:
+		case PatternType::Symbol:
 			searchPathFn = g_Dedicated->ResolveHiddenSymbol<void *>(searchSym);
 			if (!searchPathFn) {
 				HSGameLib filesys("filesystem_stdio");
@@ -145,12 +145,12 @@ DETOUR_DECL_MEMBER1(CSys_LoadModules, bool, void *, appSystemGroup) {
 					searchPathFn = g_Dedicated->ResolveHiddenSymbol<void *>(altSearchSym);
 					if (!searchPathFn)
 						searchPathFn = filesys.ResolveHiddenSymbol<void *>(altSearchSym);
-					if (type == PatternType::Pattern_Default && searchPathFn)
+					if (type == PatternType::Default && searchPathFn)
 						searchProto = AddSearchPathType::StringStringIntBool;
 				}
 			}
 			break;
-		case PatternType::Pattern_Signature:
+		case PatternType::Signature:
 			searchPathFn = g_Dedicated->FindPattern(searchSym, len);
 			if (!searchPathFn) {
 				HSGameLib filesys("filesystem_stdio");

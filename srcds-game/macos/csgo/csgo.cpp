@@ -343,7 +343,7 @@ void CSGO::PatchMapStatus(GameLibrary engine)
 
 const char *CSGO::GetAddSearchPath(PatternType &type, size_t &len, AddSearchPathType &prototype) {
 	static constexpr auto sig = MAKE_SIG("55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 58 0A 00 00");
-	type = PatternType::Pattern_Signature;
+	type = PatternType::Signature;
 	len = sig.length;
 	prototype = AddSearchPathType::StringStringInt;
 	return sig.pattern;

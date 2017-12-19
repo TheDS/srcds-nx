@@ -33,9 +33,9 @@
 #include "IServerAPI.h"
 
 enum class PatternType {
-	Pattern_Default = -1,
-	Pattern_Symbol,
-	Pattern_Signature
+	Default = -1,
+	Symbol,
+	Signature
 };
 
 enum class AddSearchPathType {
@@ -51,7 +51,7 @@ public:
 	virtual bool PostLoadModules(void *appSystemGroup) = 0;
 	virtual const char *GetAddSearchPath(PatternType &type, size_t &len,
 	                                     AddSearchPathType &prototype) {
-		type = PatternType::Pattern_Default;
+		type = PatternType::Default;
 		len = 0;
 		prototype = AddSearchPathType::StringStringInt;
 		return nullptr;
