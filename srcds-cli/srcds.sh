@@ -40,20 +40,22 @@ pop_srcds_dir() {
 }
 
 perform_update() {
-	if test "Darwin" = `uname`; then
-		./srcds-cli.bundle/Contents/Resources/srcds-updater
-		if test $? -ne 0; then
-			echo "ERROR: Failed to update srcds binaries. Please manually update."
-			quit 1
+	if test $NO_SRCDS_UPDATE -eq 0; then
+		if test "Darwin" = `uname`; then
+			./srcds-cli.bundle/Contents/Resources/srcds-updater
+			if test $? -ne 0; then
+				echo "ERROR: Failed to update srcds binaries. Please manually update."
+				quit 1
+			fi
 		fi
+	else
+		echo "NOTE: Update check for srcds binaries is disabled."
 	fi
 }
 
 init() {
 	# determine the path to the srcds install directory
 	get_srcds_dir
-
-	perform_update
 
 	# Initialises the various variables
 	# Set up the defaults
@@ -79,6 +81,7 @@ init() {
 	PARAMS=$*
 	NUMFORKS=""
 	NO_DEFAULT_MAP=0
+	NO_SRCDS_UPDATE=0
 	if [ -d "csgo" ]; then
 		DEFAULT_GAME="csgo"
 		DEFAULT_MAP="de_dust"
@@ -197,6 +200,9 @@ init() {
 		"-steamcmd_script")
 			STEAMCMD_SCRIPT=$2
 			shift ;;
+		"-noupdate")
+			NO_SRCDS_UPDATE=1
+			shift ;;
 		"-help")
 			# quit with syntax
 			quit 2
@@ -204,6 +210,8 @@ init() {
 		esac
 		shift
 	done
+
+	perform_update
 
 	# Ensure we have a game specified
 	if test -z "$GAME"; then
@@ -288,7 +296,7 @@ syntax () {
 	echo "	[-timeout <number>] [-gdb <gdb>] [-autoupdate]"
 	echo "	[-steam_sh] [-steamcmd_script] [-steamerr] [-ignoresigint]"
 	echo "  [-debuglog <logname>]"
-	echo "	[-fork <n>] [-nodefaultmap]"
+	echo "	[-fork <n>] [-nodefaultmap] [-noupdate]"
 	echo "Params:"
 	echo "-game <game>        	Specifies the <game> to run. [Default: $DEFAULT_GAME]"
 	echo "-debug              	Run debugging on failed servers if possible."
@@ -311,6 +319,7 @@ syntax () {
 	echo "-fork <n>             Run <n> server instances as subprocesses."
 	echo "-nodefaultmap			Supresses the addition of '+map $DEFAULT_MAP'"
 	echo "			to the command line options."
+	echo "-noupdate             Disable automatic update of binaries in srcds-cli."
 	echo ""
 	echo "Note: All parameters specified as passed through to the server"
 	echo "including any not listed."
