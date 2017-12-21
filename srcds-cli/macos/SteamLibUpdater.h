@@ -73,7 +73,8 @@ public:
 	void Update(SteamUniverse universe);
 private:
 	bool IsUpdateAvailable(SteamUniverse universe, URL_FILE * &manifest);
-	void ParseManifests();
+	bool IsUniverseChange(SteamUniverse &changedFrom);
+	void ParseManifests(SteamUniverse universe);
 	void DeleteOldVZips();
 	void DeleteOldFiles();
 

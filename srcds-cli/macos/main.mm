@@ -106,12 +106,15 @@ int main(int argc, char **argv) {
 
 	bool shouldHandleCrash = false;
 	bool doSteamUpdate = true;
+	SteamUniverse universe = SteamUniverse::Public;
 
 	for (int i = 0; i < argc; i++) {
 		if (strcmp(argv[i], "-nobreakpad") == 0) {
 			shouldHandleCrash = true;
 		} else if (strcmp(argv[i], "-nosteamupdate") == 0) {
 			doSteamUpdate = false;
+		} else if (strcmp(argv[i], "-steambeta") == 0) {
+			universe = SteamUniverse::PublicBeta;
 		}
 	}
 
@@ -159,7 +162,7 @@ int main(int argc, char **argv) {
 
 	if (doSteamUpdate) {
 		SteamLibUpdater updater;
-		updater.Update(SteamUniverse::Public);
+		updater.Update(universe);
 	} else {
 		printf("NOTE: Update check for steam libraries is disabled.\n");
 	}

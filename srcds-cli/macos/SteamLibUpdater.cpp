@@ -161,7 +161,26 @@ bool SteamLibUpdater::IsUpdateAvailable(SteamUniverse universe, URL_FILE * &mani
 	mkdir("package", 0755);
 	chdir("package");
 
-	ParseManifests();
+	bool universeChanged = false;
+	SteamUniverse prevUniverse;
+	if (IsUniverseChange(prevUniverse)) {
+		universeChanged = true;
+		if (prevUniverse == SteamUniverse::Public && universe == SteamUniverse::PublicBeta)
+			printf("Switching to beta version of Steam libraries\n");
+		else
+			printf("Switching to non-beta version of Steam libraries\n");
+		ParseManifests(prevUniverse);
+	} else {
+		ParseManifests(universe);
+	}
+
+	if (universe == SteamUniverse::PublicBeta) {
+		FILE *beta = fopen("beta", "w");
+		if (beta)
+			fclose(beta);
+	} else {
+		unlink("beta");
+	}
 
 	if (version_ != 0)
 		printf("Installed version: %lu\n", version_);
@@ -195,6 +214,14 @@ bool SteamLibUpdater::IsUpdateAvailable(SteamUniverse universe, URL_FILE * &mani
 					if (sscanf(value, "%lu", &manifestVersion) == 1) {
 						printf("Latest version: %s\n", value);
 						if (manifestVersion == version_) {
+							if (universeChanged) {
+								// Special case if universe changed and version remained the same
+								const char *oldManifest = GetManifestName(prevUniverse, ManifestType::Default);
+								const char *newManifest = GetManifestName(universe, ManifestType::Default);
+								rename(oldManifest, newManifest);
+								unlink(GetManifestName(prevUniverse, ManifestType::InstallList));
+								WriteInstallList(installedFiles_);
+							}
 							printf("Verifying installation...\n");
 
 							if (VerifyInstall()) {
@@ -215,8 +242,25 @@ bool SteamLibUpdater::IsUpdateAvailable(SteamUniverse universe, URL_FILE * &mani
 	return true;
 }
 
-void SteamLibUpdater::ParseManifests() {
-	FILE *currentManifest = fopen(GetManifestName(universe_, ManifestType::Default), "rt");
+bool SteamLibUpdater::IsUniverseChange(SteamUniverse &changedFrom) {
+	FILE *beta = fopen("beta", "r");
+
+	if (beta) {
+		fclose(beta);
+		if (universe_ == SteamUniverse::Public) {
+			changedFrom = SteamUniverse::PublicBeta;
+			return true;
+		}
+	} else if (universe_ == SteamUniverse::PublicBeta) {
+		changedFrom = SteamUniverse::Public;
+		return true;
+	}
+
+	return false;
+}
+
+void SteamLibUpdater::ParseManifests(SteamUniverse universe) {
+	FILE *currentManifest = fopen(GetManifestName(universe, ManifestType::Default), "rt");
 
 	if (!currentManifest)
 		return;
@@ -267,7 +311,7 @@ void SteamLibUpdater::ParseManifests() {
 
 	fclose(currentManifest);
 
-	FILE *installList = fopen(GetManifestName(universe_, ManifestType::InstallList), "rt");
+	FILE *installList = fopen(GetManifestName(universe, ManifestType::InstallList), "rt");
 
 	if (!installList)
 		return;
@@ -698,7 +742,7 @@ constexpr const char *SteamLibUpdater::GetManifestName(SteamUniverse universe, M
 				case ManifestType::InstallList:
 					return STEAM_MANIFEST_BETA EXT_INSTALL;
 				case ManifestType::Url:
-					return BASE_URL STEAM_MANIFEST_RELEASE;
+					return BASE_URL STEAM_MANIFEST_BETA;
 			}
 	}
 }
