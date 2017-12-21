@@ -105,11 +105,13 @@ int main(int argc, char **argv) {
 	GameFixerFn GetGameFixer;
 
 	bool shouldHandleCrash = false;
+	bool doSteamUpdate = true;
 
 	for (int i = 0; i < argc; i++) {
 		if (strcmp(argv[i], "-nobreakpad") == 0) {
 			shouldHandleCrash = true;
-			break;
+		} else if (strcmp(argv[i], "-nosteamupdate") == 0) {
+			doSteamUpdate = false;
 		}
 	}
 
@@ -155,9 +157,11 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	{
+	if (doSteamUpdate) {
 		SteamLibUpdater updater;
 		updater.Update(SteamUniverse::Public);
+	} else {
+		printf("NOTE: Update check for steam libraries is disabled.\n");
 	}
 
 	GameDetector detector = GameDetector::GetInstance(argc, argv);
