@@ -655,38 +655,7 @@ void SteamLibUpdater::ExtractFiles(LinkedList<AString> &files) {
 		DecompressVZip(vzip.filename.chars(), nullptr, list, files);
 	}
 
-	chdir("package");
-	FILE *installManifest = fopen(GetManifestName(universe_, ManifestType::InstallList), "w+");
-
-	for (InstallEntry_t e : list) {
-		fprintf(installManifest, "%s,%lld;%ld;%u\n", e.filename.chars(), e.size, e.timestamp, e.crc);
-	}
-
-	rewind(installManifest);
-	size_t read;
-	char line[1024];
-
-	CSha256 sha256;
-	Byte digest[32];
-	Sha256_Init(&sha256);
-
-	do
-	{
-		read = fread(line, 1, sizeof(line), installManifest);
-		Sha256_Update(&sha256, (Byte *)line, read);
-	} while (read > 0);
-
-	Sha256_Final(&sha256, digest);
-
-	fprintf(installManifest, "SHA2=");
-
-	for (Byte b : digest) {
-		fprintf(installManifest, "%02X", b);
-	}
-
-	fprintf(installManifest, "\n");
-
-	fclose(installManifest);
+	WriteInstallList(list);
 }
 
 void SteamLibUpdater::WriteInstallList(LinkedList<InstallEntry_t> &list) {
