@@ -41,4 +41,6 @@ Open the srcds-nx Xcode project and build the srcds-cli scheme. Alternatively, f
 
 Installation and Usage
 ---
-Binaries may be obtained from the [Releases](https://github.com/TheDS/srcds-nx/releases) page. For usage instructions and support, see: https://forums.alliedmods.net/showthread.php?t=158240
+Binaries may be obtained from the [Releases](https://github.com/TheDS/srcds-nx/releases) page.
+
+For usage instructions and support, see: https://forums.alliedmods.net/showthread.php?t=158240
