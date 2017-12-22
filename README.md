@@ -1,5 +1,6 @@
 SrcDS NX
 =========
+[![Build Status](https://travis-ci.org/TheDS/srcds-nx.svg?branch=master)](https://travis-ci.org/TheDS/srcds-nx)
 
 This is currently a command line only program for running dedicated servers for various Source games on macOS. It wraps around the existing `dedicated` library that is included with most Source games. It also employs a number of hacks that install function detours and manipulate memory in order to get the game server to run properly.
 
@@ -10,6 +11,13 @@ Requirements
 ---
 * macOS 10.9+
 * One or more of the Source games listed below
+
+Build Requirements
+---
+* macOS 10.12.6+
+* Xcode 9.0+
+
+Versions of GCC or upstream clang with support for C++17 may work on other macOS versions, but there is no makefile build support at this time.
 
 Supported Games
 ---
@@ -27,6 +35,10 @@ Supported Games
 * Source SDK Base 2013 Multiplayer Mods
 * Team Fortress 2
 
+Building
+---
+Open the srcds-nx Xcode project and build the srcds-cli scheme. Alternatively, from a terminal, run `xcodebuild` in the directory containing the project.
+
 Installation and Usage
 ---
-For binary downloads and usage instructions, see: https://forums.alliedmods.net/showthread.php?t=158240
+Binaries may be obtained from the [Releases](https://github.com/TheDS/srcds-nx/releases) page. For usage instructions and support, see: https://forums.alliedmods.net/showthread.php?t=158240
