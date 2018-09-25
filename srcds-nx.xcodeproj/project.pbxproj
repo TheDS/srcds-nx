@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1041,7 +1041,7 @@
 		D23D5EC61F41F73800E69C78 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = AlliedModders;
 				TargetAttributes = {
 					D23D5ECD1F41F73800E69C78 = {
@@ -1095,7 +1095,7 @@
 				};
 			};
 			buildConfigurationList = D23D5EC91F41F73800E69C78 /* Build configuration list for PBXProject "srcds-nx" */;
-			compatibilityVersion = "Xcode 8.0";
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1480,8 +1480,19 @@
 					"srcds-macos",
 					public,
 				);
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Libraries @loader_path/../../.. @loader_path/../../../bin @loader_path/../Steam";
-				"LD_RUNPATH_SEARCH_PATHS[arch=x86_64]" = "@loader_path/../Libraries @loader_path/../../.. @loader_path/../../../bin @loader_path/../../../bin/osx64 @loader_path/../Steam";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@loader_path/../Libraries",
+					"@loader_path/../../..",
+					"@loader_path/../../../bin",
+					"@loader_path/../Steam",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[arch=x86_64]" = (
+					"@loader_path/../Libraries",
+					"@loader_path/../../..",
+					"@loader_path/../../../bin",
+					"@loader_path/../../../bin/osx64",
+					"@loader_path/../Steam",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1506,8 +1517,19 @@
 					"srcds-macos",
 					public,
 				);
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Libraries @loader_path/../../.. @loader_path/../../../bin @loader_path/../Steam";
-				"LD_RUNPATH_SEARCH_PATHS[arch=x86_64]" = "@loader_path/../Libraries @loader_path/../../.. @loader_path/../../..bin @loader_path/../../../bin/osx64 @loader_path/../Steam";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@loader_path/../Libraries",
+					"@loader_path/../../..",
+					"@loader_path/../../../bin",
+					"@loader_path/../Steam",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[arch=x86_64]" = (
+					"@loader_path/../Libraries",
+					"@loader_path/../../..",
+					"@loader_path/../../..bin",
+					"@loader_path/../../../bin/osx64",
+					"@loader_path/../Steam",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
