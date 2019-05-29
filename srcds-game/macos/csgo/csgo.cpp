@@ -47,6 +47,7 @@ static void **g_pShaderDeviceMgrDx8;
 static void **g_pShaderShadow;
 static void **g_pShaderShadowDx8;
 static void **g_pHWConfig;
+static void **g_pHardwareConfig;
 
 static IDetour *detSetShaderApi;
 
@@ -79,6 +80,7 @@ DETOUR_DECL_MEMBER1(CMaterialSystem_SetShaderAPI, void, const char *, pModuleNam
 	*g_pShaderDeviceDx8 = *g_pShaderDevice;
 	*g_pShaderDeviceMgrDx8 = *g_pShaderDeviceMgr;
 	*g_pShaderShadowDx8 = *g_pShaderShadow;
+	*g_pHardwareConfig = *g_pHWConfig;
 
 	detSetShaderApi->Destroy();
 }
@@ -149,9 +151,9 @@ DETOUR_DECL_STATIC1(Sys_LoadModule, void *, const char *, pModuleName) {
 			g_pShaderDevice = (void **)(p + offset + 4 + shaderOffs);
 		}
 
-		// g_pShaderDeviceDx8: CDynamicMeshDX8::HasEnoughRoom
+		// g_pShaderDeviceDx8: CTempMeshDX8::GetDynamicMesh
 		{
-			constexpr auto sig = MAKE_SIG("55 48 89 E5 41 57 41 56 53 50 41 89 D6 89 F3 49 89 FF 48 8D 05 ? ? ? ? 48 8B 38 48 8B 07 FF 90 30 01 00 00");
+			constexpr auto sig = MAKE_SIG("55 48 89 E5 53 50 48 8B 5F 18 48 8D 05 ? ? ? ? 48");
 			constexpr int offset = sig.offsetOfWild();
 			char *p = (char *)matsys->FindPattern(sig.pattern, sig.length);
 			if (!p) {
@@ -188,10 +190,10 @@ DETOUR_DECL_STATIC1(Sys_LoadModule, void *, const char *, pModuleName) {
 			g_pShaderDeviceMgrDx8 = (void **)(p + offset + 4 + shaderOffs);
 		}
 
-		// g_pShaderShadow: CShaderSystem::TakeSnapshot
+		// g_pShaderShadow: CMaterialSystem::Init (toward end of function)
 		{
-			constexpr auto sig = MAKE_SIG("55 48 89 E5 41 57 41 56 53 50 49 89 FF 48 8D 05 ? ? ? ? 48 8B 38 48 8B 07 FF 90 88 00 00 00 83 F8 5C 7C 33 4C 8D 35 ? ? ? ? 49");
-			constexpr int offset = sig.offsetOfWild(5);
+			constexpr auto sig = MAKE_SIG("48 8D 05 ? ? ? ? 48 C7 00 00 00 00 00 48 C7 83 ? ? ? ? 00 00 00 00 31 C0");
+			constexpr int offset = sig.offsetOfWild();
 			char *p = (char *)matsys->FindPattern(sig.pattern, sig.length);
 			if (!p) {
 				printf("Failed to find signature to locate g_pShaderShadow\n");
@@ -201,10 +203,10 @@ DETOUR_DECL_STATIC1(Sys_LoadModule, void *, const char *, pModuleName) {
 			g_pShaderShadow = (void **)(p + offset + 4 + shaderOffs);
 		}
 
-		// g_pShaderShadowDx8: CShaderAPIDx8::ClearSnapshots
+		// g_pShaderShadowDx8: CShaderAPIDx8::OnDeviceInit (middle of function)
 		{
-			constexpr auto sig = MAKE_SIG("55 48 89 E5 41 56 53 48 89 FB 4C 8D B3 78 34 00 00 4C 89 F7 E8 ? ? ? ? 48 8D 05 ? ? ? ? 48");
-			constexpr int offset = sig.offsetOfWild(5);
+			constexpr auto sig = MAKE_SIG("48 8D 05 ? ? ? ? 48 8B 38 48 8B 07 FF 10 4C 89 FF");
+			constexpr int offset = sig.offsetOfWild();
 			char *p = (char *)matsys->FindPattern(sig.pattern, sig.length);
 			if (!p) {
 				printf("Failed to find signature to locate g_pShaderShadowDx8\n");
@@ -214,9 +216,9 @@ DETOUR_DECL_STATIC1(Sys_LoadModule, void *, const char *, pModuleName) {
 			g_pShaderShadowDx8 = (void **)(p + offset + 4 + shaderOffs);
 		}
 
-		// g_pHWConfig: CMaterialSystem::SupportsHDRMode
+		// g_pHWConfig: GetHardwareConfig (static)
 		{
-			constexpr auto sig = MAKE_SIG("55 48 89 E5 48 8B 3D ? ? ? ? 48 8B 07 48 8B 80 68 01 00 00");
+			constexpr auto sig = MAKE_SIG("55 48 89 E5 48 8B 0D ? ? ? ? 31 C0");
 			constexpr int offset = sig.offsetOfWild();
 			char *p = (char *)matsys->FindPattern(sig.pattern, sig.length);
 			if (!p) {
@@ -225,6 +227,19 @@ DETOUR_DECL_STATIC1(Sys_LoadModule, void *, const char *, pModuleName) {
 			}
 			uint32_t shaderOffs = *(uint32_t *)(p + offset);
 			g_pHWConfig = (void **)(p + offset + 4 + shaderOffs);
+		}
+
+		// g_pHardwareConfig: CShaderAPIDx8::OnAdapterSet
+		{
+			constexpr auto sig = MAKE_SIG("55 48 89 E5 41 56 53 48 89 FB E8 ? ? ? ? 84 C0 74 38 4C 8D 35 ? ? ? ? 49");
+			constexpr int offset = sig.offsetOfWild(5);
+			char *p = (char *)matsys->FindPattern(sig.pattern, sig.length);
+			if (!p) {
+				printf("Failed to find signature to locate g_pHardwareConfig\n");
+				return nullptr;
+			}
+			uint32_t shaderOffs = *(uint32_t *)(p + offset);
+			g_pHardwareConfig = (void **)(p + offset + 4 + shaderOffs);
 		}
 	}
 
