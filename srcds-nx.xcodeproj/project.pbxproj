@@ -1134,7 +1134,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${TARGET_BUILD_DIR}\"\nln -sf srcds-cli.bundle/Contents/Resources/srcds.sh\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"srcds-cli.bundle/Contents/Info.plist\")\nrm -f srcds-nx-$buildNumber.zip\nzip -r -X -y srcds-nx-$buildNumber.zip srcds-cli.bundle srcds.sh";
+			shellScript = "set -e\nif [ ! -e .git ] || ! which -s git; then\n  exit 0\nfi\n\n# Get git version based on most recent tag and strip version tag\ngitVersion=$(git describe --tags --match '[1-9].*')\ngitSuffix=${gitVersion#*-}\n\n# Plistbuddy is present at this path\nexport PATH=\"$PATH:/usr/libexec\"\n\ncd \"${TARGET_BUILD_DIR}\"\nln -sf srcds-cli.bundle/Contents/Resources/srcds.sh\nplistPath=srcds-cli.bundle/Contents/Info.plist\nversionNumber=$(PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$plistPath\")\nnewVersion=${versionNumber}-${gitSuffix}\noldVersion=$(PlistBuddy -c \"Print :CFBundleVersion\" \"$plistPath\")\nif [ \"$oldVersion\" != \"$newVersion\" ]; then\n  Plistbuddy -c \"Set :CFBundleVersion '$newVersion'\" \"$plistPath\"\nfi\nrm -f srcds-nx-$oldVersion.zip\nzip -r -X -y srcds-nx-$newVersion.zip srcds-cli.bundle srcds.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1351,6 +1351,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.1.0;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1376,6 +1377,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx10.13;
+				VERSION_INFO_SUFFIX = "-dev";
 			};
 			name = Debug;
 		};
@@ -1421,6 +1423,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.1.0;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1440,6 +1443,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx10.13;
+				VERSION_INFO_SUFFIX = "-dev";
 			};
 			name = Release;
 		};
