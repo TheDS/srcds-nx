@@ -1313,6 +1313,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					i386,
+					x86_64,
+				);
+				ARCHS_STANDARD_32_64_BIT = (
+					i386,
+					x86_64,
+				);
+				ARCHS_STANDARD_32_BIT = i386;
+				ARCHS_STANDARD_64_BIT = x86_64;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
@@ -1339,7 +1349,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1365,7 +1375,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.13;
 			};
 			name = Debug;
 		};
@@ -1373,6 +1383,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+                                ARCHS = (
+                                        i386,
+                                        x86_64,
+                                );
+                                ARCHS_STANDARD_32_64_BIT = (
+                                        i386,
+                                        x86_64,
+                                );
+                                ARCHS_STANDARD_32_BIT = i386;
+                                ARCHS_STANDARD_64_BIT = x86_64;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
@@ -1399,7 +1419,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1419,7 +1439,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.13;
 			};
 			name = Release;
 		};
@@ -1494,7 +1514,7 @@
 					"@loader_path/../Steam",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-Wl,-U,_objc_loadClassref";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1531,7 +1551,7 @@
 					"@loader_path/../Steam",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-Wl,-U,_objc_loadClassref";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1771,6 +1791,7 @@
 		D2AC1D201F5E9DDF008501DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
@@ -1783,6 +1804,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-Wl,-U,_objc_loadClassref";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1790,6 +1812,7 @@
 		D2AC1D211F5E9DDF008501DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
@@ -1802,6 +1825,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-Wl,-U,_objc_loadClassref";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
