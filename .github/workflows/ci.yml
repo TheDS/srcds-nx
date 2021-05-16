@@ -1,0 +1,67 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - master
+      - '[1-9].[0-9]-dev'
+  pull_request:
+    branches:
+      - master
+      - '[1-9].[0-9]-dev'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: Fetch Tags
+        run: git fetch --tags --force
+        
+      - name: Restore MacOS SDK from Cache
+        id: cache-mac-sdk
+        uses: actions/cache@v2
+        with: 
+          path: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+          key: mac-sdk-10.13
+        
+      - name: Install MacOS 10.13 SDK
+        if: steps.cache-mac-sdk.outputs.cache-hit != 'true'
+        run: |
+          cd /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+          wget http://swcdn.apple.com/content/downloads/33/36/041-90419-A_7JJ4H9ZHO2/xs88ob5wjz6riz7g6764twblnvksusg4ps/CLTools_SDK_macOS1013.pkg
+          pkgutil --expand-full CLTools_SDK_macOS1013.pkg 10.13
+          mv 10.13/Payload/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk MacOSX10.13.sdk
+          rm -rf 10.13
+          rm CLTools_SDK_macOS1013.pkg
+          
+      - name: Configure Xcode to Build With 10.13 SDK
+        run: |
+          cd /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform
+          plutil -replace MinimumSDKVersion -string 10.13 Info.plist
+
+      - name: Configure Xcode to Allow i386 Arch Builds
+        run: |
+          cd /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Xcode/PrivatePlugIns/IDEOSXSupportCore.ideplugin/Contents/Resources
+          sed -i bak 's/DeprecatedError[[:space:]]*=[[:space:]]*YES[[:space:]]*;/DeprecatedError = NO;/g' 'MacOSX Architectures.xcspec'
+
+      - name: Build with Xcode
+        run: |
+          xcodebuild
+          
+      - name: Archive Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: Binaries
+          path: build/Release/srcds-nx-*-mac.zip
+          
+      - name: Archive Debug Symbols
+        uses: actions/upload-artifact@v2
+        with:
+          name: Debug Symbols
+          path: build/Release/srcds-nx-*-dsym.zip
