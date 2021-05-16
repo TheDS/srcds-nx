@@ -1,6 +1,6 @@
 SrcDS NX
 =========
-[![Build Status](https://travis-ci.org/TheDS/srcds-nx.svg?branch=master)](https://travis-ci.org/TheDS/srcds-nx)
+[![Build Status](https://github.com/TheDS/srcds-nx/actions/workflows/ci.yml/badge.svg?branch=1.1-dev)](https://github.com/TheDS/srcds-nx/actions?query=branch%3A1.1-dev)
 
 This is currently a command line only program for running dedicated servers for various Source games on macOS. It wraps around the existing `dedicated` library that is included with most Source games. It also employs a number of hacks that install function detours and manipulate memory in order to get the game server to run properly.
 
