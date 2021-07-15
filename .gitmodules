@@ -1,0 +1,3 @@
+[submodule "sparkle"]
+	path = srcds-updater/macos/sparkle
+	url = https://github.com/sparkle-project/Sparkle

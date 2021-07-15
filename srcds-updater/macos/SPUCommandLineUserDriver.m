@@ -30,7 +30,7 @@
 
 #import "SPUCommandLineUserDriver.h"
 #import <AppKit/AppKit.h>
-#import <SparkleCore/SparkleCore.h>
+#import <Sparkle/Sparkle.h>
 
 #include "getch.h"
 
@@ -41,10 +41,10 @@
 @property (nonatomic, nullable, readonly) SUUpdatePermissionResponse *updatePermissionResponse;
 @property (nonatomic, readonly) BOOL deferInstallation;
 @property (nonatomic, readonly) BOOL verbose;
-@property (nonatomic, readonly) SPUUserDriverCoreComponent *coreComponent;
 @property (nonatomic) uint64_t bytesDownloaded;
 @property (nonatomic) uint64_t bytesToDownload;
 @property (nonatomic, readonly) NSString *currentVersion;
+@property (nonatomic) BOOL externalReleaseNotes;
 
 @end
 
@@ -53,10 +53,10 @@
 @synthesize updatePermissionResponse = _updatePermissionResponse;
 @synthesize deferInstallation = _deferInstallation;
 @synthesize verbose = _verbose;
-@synthesize coreComponent = _coreComponent;
 @synthesize bytesDownloaded = _bytesDownloaded;
 @synthesize bytesToDownload = _bytesToDownload;
 @synthesize currentVersion = _currentVersion;
+@synthesize externalReleaseNotes = _externalReleaseNotes;
 
 - (instancetype)initWithUpdatePermissionResponse:(nullable SUUpdatePermissionResponse *)updatePermissionResponse deferInstallation:(BOOL)deferInstallation verbose:(BOOL)verbose currentVersion:(nonnull NSString *)currentVersion
 {
@@ -65,50 +65,31 @@
         _updatePermissionResponse = updatePermissionResponse;
         _deferInstallation = deferInstallation;
         _verbose = verbose;
-        _coreComponent = [[SPUUserDriverCoreComponent alloc] init];
-		_currentVersion = currentVersion;
+        _currentVersion = currentVersion;
+        _externalReleaseNotes = NO;
     }
     return self;
 }
 
-- (void)showCanCheckForUpdates:(BOOL)canCheckForUpdates
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coreComponent showCanCheckForUpdates:canCheckForUpdates];
-    });
-}
-
 - (void)showUpdatePermissionRequest:(SPUUpdatePermissionRequest *)__unused request reply:(void (^)(SUUpdatePermissionResponse *))reply
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.updatePermissionResponse == nil) {
-            // We don't want to make this decision on behalf of the user.
-            printf("Error: Asked to grant update permission. Exiting.\n");
-            exit(EXIT_FAILURE);
-        } else {
-            if (self.verbose) {
-                printf("Granting permission for automatic update checks with sending system profile %s...\n", self.updatePermissionResponse.sendSystemProfile ? "enabled" : "disabled");
-            }
-            reply(self.updatePermissionResponse);
-        }
-    });
-}
-
-- (void)showUserInitiatedUpdateCheckWithCompletion:(void (^)(SPUUserInitiatedCheckStatus))updateCheckStatusCompletion
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coreComponent registerUpdateCheckStatusHandler:updateCheckStatusCompletion];
+    if (self.updatePermissionResponse == nil) {
+        // We don't want to make this decision on behalf of the user.
+        printf("Error: Asked to grant update permission. Exiting.\n");
+        exit(EXIT_FAILURE);
+    } else {
         if (self.verbose) {
-            printf("Checking for srcds updates...\n");
+            printf("Granting permission for automatic update checks with sending system profile %s...\n", self.updatePermissionResponse.sendSystemProfile ? "enabled" : "disabled");
         }
-    });
+        reply(self.updatePermissionResponse);
+    }
 }
 
-- (void)dismissUserInitiatedUpdateCheck
+- (void)showUserInitiatedUpdateCheckWithCancellation:(void (^)(void))__unused cancellation
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coreComponent completeUpdateCheckStatus];
-    });
+    if (self.verbose) {
+        printf("Checking for srcds updates...\n");
+    }
 }
 
 - (void)displayReleaseNotes:(const char * _Nullable)releaseNotes
@@ -117,15 +98,18 @@
         printf("Release notes:\n");
         printf("%s\n", releaseNotes);
     }
-	printf("Press any key to begin updating\n");
-	getch();
+
+    if (self.externalReleaseNotes) {
+        printf("Press any key to begin updating\n");
+        getch();
+        printf("Downloading update...\n");
+    }
 }
 
 - (void)displayHTMLReleaseNotes:(NSData *)releaseNotes
 {
     // Note: this is the only API we rely on here that references AppKit
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTML:releaseNotes documentAttributes:nil];
-
     [self displayReleaseNotes:attributedString.string.UTF8String];
 }
 
@@ -138,208 +122,176 @@
 - (void)showUpdateWithAppcastItem:(SUAppcastItem *)appcastItem updateAdjective:(NSString *)updateAdjective
 {
     if (self.verbose) {
-		printf("Installed version: %s\n", self.currentVersion.UTF8String);
-		printf("Latest version: %s\n", appcastItem.displayVersionString.UTF8String);
+        printf("Installed version: %s\n", self.currentVersion.UTF8String);
+        printf("Latest version: %s\n", appcastItem.displayVersionString.UTF8String);
 
         if (appcastItem.itemDescription != nil) {
             NSData *descriptionData = [appcastItem.itemDescription dataUsingEncoding:NSUTF8StringEncoding];
             if (descriptionData != nil) {
                 [self displayHTMLReleaseNotes:descriptionData];
             }
-		} else {
-			printf("\nPress any key to begin updating");
-			getch();
-			printf("\n\n");
-		}
+        } else if (appcastItem.releaseNotesURL != nil) {
+            self.externalReleaseNotes = YES;
+        }
+    }
+
+    if (!self.externalReleaseNotes) {
+        printf("Press any key to begin updating\n");
+        getch();
     }
 }
 
-- (void)showUpdateFoundWithAppcastItem:(SUAppcastItem *)appcastItem userInitiated:(BOOL)__unused userInitiated reply:(void (^)(SPUUpdateAlertChoice))reply
+- (void)showUpdateFoundWithAppcastItem:(SUAppcastItem *)appcastItem state:(SPUUserUpdateState *)state reply:(void (^)(SPUUserUpdateChoice))reply
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showUpdateWithAppcastItem:appcastItem updateAdjective:@"new"];
-        reply(SPUInstallUpdateChoice);
-    });
-}
-
-- (void)showDownloadedUpdateFoundWithAppcastItem:(SUAppcastItem *)appcastItem userInitiated:(BOOL)__unused userInitiated reply:(void (^)(SPUUpdateAlertChoice))reply
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showUpdateWithAppcastItem:appcastItem updateAdjective:@"downloaded"];
-        reply(SPUInstallUpdateChoice);
-    });
-}
-
-- (void)showResumableUpdateFoundWithAppcastItem:(SUAppcastItem *)appcastItem userInitiated:(BOOL)__unused userInitiated reply:(void (^)(SPUInstallUpdateStatus))reply
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coreComponent registerInstallUpdateHandler:reply];
-        [self showUpdateWithAppcastItem:appcastItem updateAdjective:@"resumable"];
-
-        if (self.deferInstallation) {
-            if (self.verbose) {
-                printf("Deferring installation.\n");
-            }
-            [self.coreComponent installUpdateWithChoice:SPUDismissUpdateInstallation];
-        } else {
-            [self.coreComponent installUpdateWithChoice:SPUInstallAndRelaunchUpdateNow];
-        }
-    });
-}
-
-- (void)showInformationalUpdateFoundWithAppcastItem:(SUAppcastItem *)appcastItem userInitiated:(BOOL)__unused userInitiated reply:(void (^)(SPUInformationalUpdateAlertChoice))reply
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
+    if (appcastItem.informationOnlyUpdate) {
         printf("Found information for new update: %s\n", appcastItem.infoURL.absoluteString.UTF8String);
+        reply(SPUUserUpdateChoiceDismiss);
+    } else {
+        switch (state.stage) {
+            case SPUUserUpdateStageNotDownloaded:
+                [self showUpdateWithAppcastItem:appcastItem updateAdjective:@"new"];
+                reply(SPUUserUpdateChoiceInstall);
+                break;
+            case SPUUserUpdateStageDownloaded:
+                [self showUpdateWithAppcastItem:appcastItem updateAdjective:@"downloaded"];
+                reply(SPUUserUpdateChoiceInstall);
+                break;
+            case SPUUserUpdateStageInstalling:
 
-        reply(SPUDismissInformationalNoticeChoice);
-    });
+                if (self.deferInstallation) {
+                    if (self.verbose) {
+                        printf("Deferring installation.\n");
+                    }
+                    reply(SPUUserUpdateChoiceDismiss);
+                } else {
+                    reply(SPUUserUpdateChoiceInstall);
+                }
+                break;
+        }
+    }
+}
+
+- (void)showUpdateInFocus
+{
 }
 
 - (void)showUpdateReleaseNotesWithDownloadData:(SPUDownloadData *)downloadData
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.verbose) {
-            if (downloadData.MIMEType != nil && [downloadData.MIMEType isEqualToString:@"text/plain"]) {
-                NSStringEncoding encoding;
-                if (downloadData.textEncodingName == nil) {
-                    encoding = NSUTF8StringEncoding;
-                } else {
-                    CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)downloadData.textEncodingName);
-                    if (cfEncoding != kCFStringEncodingInvalidId) {
-                        encoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
-                    } else {
-                        encoding = NSUTF8StringEncoding;
-                    }
-                }
-                [self displayPlainTextReleaseNotes:downloadData.data encoding:encoding];
+    if (self.verbose) {
+        if (downloadData.MIMEType != nil && [downloadData.MIMEType isEqualToString:@"text/plain"]) {
+            NSStringEncoding encoding;
+            if (downloadData.textEncodingName == nil) {
+                encoding = NSUTF8StringEncoding;
             } else {
-                [self displayHTMLReleaseNotes:downloadData.data];
+                CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)downloadData.textEncodingName);
+                if (cfEncoding != kCFStringEncodingInvalidId) {
+                    encoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
+                } else {
+                    encoding = NSUTF8StringEncoding;
+                }
             }
+            [self displayPlainTextReleaseNotes:downloadData.data encoding:encoding];
+        } else {
+            [self displayHTMLReleaseNotes:downloadData.data];
         }
-    });
+    }
 }
 
 - (void)showUpdateReleaseNotesFailedToDownloadWithError:(NSError *)error
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.verbose) {
-            printf("Error: Unable to download release notes: %s\n", error.localizedDescription.UTF8String);
-        }
-    });
+    if (self.verbose) {
+        printf("Error: Unable to download release notes: %s\n", error.localizedDescription.UTF8String);
+    }
 }
 
-- (void)showUpdateNotFoundWithAcknowledgement:(void (^)(void))__unused acknowledgement
+- (void)showUpdateNotFoundWithError:(NSError *)error acknowledgement:(void (^)(void))__unused acknowledgement __attribute__((noreturn))
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.verbose) {
-            printf("No new update available!\n");
-        }
-        exit(EXIT_SUCCESS);
-    });
+    if (self.verbose) {
+        printf("No new update available!\n");
+    }
+    exit(EXIT_SUCCESS);
 }
 
-- (void)showUpdaterError:(NSError *)error acknowledgement:(void (^)(void))__unused acknowledgement
+- (void)showUpdaterError:(NSError *)error acknowledgement:(void (^)(void))__unused acknowledgement __attribute__((noreturn))
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        printf("Error: Update has failed: %s\n", error.localizedDescription.UTF8String);
-        exit(EXIT_FAILURE);
-    });
+    printf("Error: Update has failed: %s\n", error.localizedDescription.UTF8String);
+    printf("For more information, check Console.app for logs related to Sparkle.\n");
+    exit(EXIT_FAILURE);
 }
 
-- (void)showDownloadInitiatedWithCompletion:(void (^)(SPUDownloadUpdateStatus))downloadUpdateStatusCompletion
+- (void)showDownloadInitiatedWithCancellation:(void (^)(void))__unused cancellation
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coreComponent registerDownloadStatusHandler:downloadUpdateStatusCompletion];
-
-        if (self.verbose) {
+    if (self.verbose) {
+        if (self.externalReleaseNotes) {
+            printf("Downloading release notes...\n");
+        } else {
             printf("Downloading update...\n");
         }
-    });
+    }
 }
 
 - (void)showDownloadDidReceiveExpectedContentLength:(uint64_t)expectedContentLength
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.bytesDownloaded = 0;
-        self.bytesToDownload = expectedContentLength;
-    });
+    self.bytesDownloaded = 0;
+    self.bytesToDownload = expectedContentLength;
 }
 
 - (void)showDownloadDidReceiveDataOfLength:(uint64_t)length
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.bytesDownloaded += length;
+    self.bytesDownloaded += length;
 
-        // In case our expected content length was incorrect
-        if (self.bytesDownloaded > self.bytesToDownload) {
-            self.bytesToDownload = self.bytesDownloaded;
-        }
+    // In case our expected content length was incorrect
+    if (self.bytesDownloaded > self.bytesToDownload) {
+        self.bytesToDownload = self.bytesDownloaded;
+    }
 
-        if (self.bytesToDownload > 0) {
-			printf("Downloaded %llu out of %llu bytes (%.0f%%)\n", self.bytesDownloaded,
-				   self.bytesToDownload, (self.bytesDownloaded * 100.0 / self.bytesToDownload));
-		}
-    });
+    if (self.bytesToDownload > 0 && self.verbose) {
+        printf("Downloaded %llu out of %llu bytes (%.0f%%)\n", self.bytesDownloaded,
+               self.bytesToDownload, (self.bytesDownloaded * 100.0 / self.bytesToDownload));
+    }
 }
 
 - (void)showDownloadDidStartExtractingUpdate
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coreComponent completeDownloadStatus];
-    });
+
 }
 
 - (void)showExtractionReceivedProgress:(double)progress
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-		printf("Extracting update (%.0f%%)\n", progress * 100);
-    });
+    printf("Extracting update (%.0f%%)\n", progress * 100);
 }
 
-- (void)showReadyToInstallAndRelaunch:(void (^)(SPUInstallUpdateStatus))installUpdateHandler
+- (void)showReadyToInstallAndRelaunch:(void (^)(SPUUserUpdateChoice))installUpdateHandler
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coreComponent registerInstallUpdateHandler:installUpdateHandler];
-
-        if (self.deferInstallation) {
-            if (self.verbose) {
-                printf("Deferring installation.\n");
-            }
-            [self.coreComponent installUpdateWithChoice:SPUDismissUpdateInstallation];
-        } else {
-            [self.coreComponent installUpdateWithChoice:SPUInstallAndRelaunchUpdateNow];
+    if (self.deferInstallation) {
+        if (self.verbose) {
+            printf("Deferring installation.\n");
         }
-    });
+        installUpdateHandler(SPUUserUpdateChoiceDismiss);
+    } else {
+        installUpdateHandler(SPUUserUpdateChoiceInstall);
+    }
 }
 
 - (void)showInstallingUpdate
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.verbose) {
-            printf("Installing update...\n");
-        }
-    });
+    if (self.verbose) {
+        printf("Installing update...\n");
+    }
 }
 
-- (void)showUpdateInstallationDidFinishWithAcknowledgement:(void (^)(void))acknowledgement
+- (void)showUpdateInstalledAndRelaunched:(BOOL)__unused relaunched acknowledgement:(void (^)(void))acknowledgement
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coreComponent registerAcknowledgement:acknowledgement];
+    if (self.verbose) {
+        printf("Installation finished.\n");
+    }
 
-        if (self.verbose) {
-           printf("Installation finished.\n");
-        }
-
-        [self.coreComponent acceptAcknowledgement];
-    });
+    acknowledgement();
 }
 
-- (void)dismissUpdateInstallation
+- (void)dismissUpdateInstallation __attribute__((noreturn))
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        exit(EXIT_SUCCESS);
-    });
+    exit(EXIT_SUCCESS);
 }
 
 - (void)showSendingTerminationSignal

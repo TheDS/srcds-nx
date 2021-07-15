@@ -27,19 +27,29 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <SparkleCore/SparkleCore.h>
+#import <Sparkle/Sparkle.h>
 #import "SPUCommandLineDriver.h"
 
 int main(int argc, const char **argv) {
 	@autoreleasepool {
+		// If an update's release notes are embedded in the Sparkle appcast file or there are
+		// external release notes which use HTML, then the use of NSAttributedString to parse that
+		// somehow causes a dock icon to be created as long as the program is located in
+		// <bundle>/Contents/MacOS. Moving it outside of Contents/MacOS has other drawbacks
+		// however. For now, force this to be background process in order to remove the dock icon.
+		// TODO: Find an alternative way of dealing with this.
+		ProcessSerialNumber psn = { 0, kCurrentProcess };
+		TransformProcessType(&psn, kProcessTransformToBackgroundApplication);
+
 		NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-		NSString *pathToBundle = [bundlePath stringByAppendingPathComponent:@"../.."];
 
 		SPUCommandLineDriver *driver = [[SPUCommandLineDriver alloc]
-										initWithUpdateBundlePath:pathToBundle
-										applicationBundlePath:nil customFeedURL:nil
+										initWithUpdateBundlePath:bundlePath
+										applicationBundlePath:@"/"
+										allowedChannels:[NSSet set] customFeedURL:nil
 										updatePermissionResponse:nil deferInstallation:NO
-										interactiveInstallation:YES verbose:YES];
+										interactiveInstallation:YES allowMajorUpgrades:YES
+										verbose:YES];
 
 		[driver runAndCheckForUpdatesNow:YES];
 		[[NSRunLoop currentRunLoop] run];

@@ -6,15 +6,28 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		D2D8D46A269E850D00A4B0D6 /* Sparkle */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D2D8D46D269E850D00A4B0D6 /* Build configuration list for PBXAggregateTarget "Sparkle" */;
+			buildPhases = (
+				D2D8D46E269E852200A4B0D6 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Sparkle;
+			productName = Sparkle;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
+		D205965F269E88D2006DD288 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D205965E269E88D2006DD288 /* Sparkle.framework */; };
 		D23D5F091F42A74B00E69C78 /* srcds-macos in CopyFiles */ = {isa = PBXBuildFile; fileRef = D23D5EDB1F41F7CB00E69C78 /* srcds-macos */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D23D5F0B1F42A76300E69C78 /* libsrcds-sdk2013.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D23D5EF51F42992300E69C78 /* libsrcds-sdk2013.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D24F71241F5B65DF003ED63B /* libsrcds-l4d.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D265D4B81F5B5B4300C24D27 /* libsrcds-l4d.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D24F71361F5CF066003ED63B /* libsrcds-l4d2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D24F712F1F5CEEB1003ED63B /* libsrcds-l4d2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D24F71421F5CF933003ED63B /* libsrcds-nd.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D24F713C1F5CF90E003ED63B /* libsrcds-nd.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D24F71531F5D25B7003ED63B /* libsrcds-ins.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D24F714D1F5D2579003ED63B /* libsrcds-ins.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D26C2D621F65197A00D70C4D /* SparkleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D26C2D611F65197A00D70C4D /* SparkleCore.framework */; };
-		D26C2D8C1F651ADD00D70C4D /* SparkleCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D26C2D611F65197A00D70C4D /* SparkleCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D26C2D8E1F651B0800D70C4D /* cocoa_helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2F6A8CD1F6516FE00DD6BC1 /* cocoa_helpers.mm */; };
 		D26C2D8F1F651B0800D70C4D /* GameDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2F6A8C61F6516FE00DD6BC1 /* GameDetector.cpp */; };
 		D26C2D921F651B0800D70C4D /* GameLibPosix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2F6A8CB1F6516FE00DD6BC1 /* GameLibPosix.cpp */; };
@@ -59,8 +72,9 @@
 		D26C2DBE1F651CF900D70C4D /* l4d2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D26C2D841F651A6000D70C4D /* l4d2.cpp */; };
 		D26C2DBF1F651CFE00D70C4D /* nd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D26C2D771F651A2100D70C4D /* nd.cpp */; };
 		D26E8B111F5AA83B00EAA2BC /* libsrcds-gmod.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D26E8B041F5AA7D800EAA2BC /* libsrcds-gmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D29913CD1F5EA1D70064BB64 /* srcds-updater in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2AC1D1B1F5E9DDF008501DC /* srcds-updater */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D2751DA9269E940100F38FFE /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D205965E269E88D2006DD288 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D29913CF1F5F95910064BB64 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29913CE1F5F95910064BB64 /* AppKit.framework */; };
+		D2B09D19269FA9F000BDAC18 /* srcds-updater in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2AC1D1B1F5E9DDF008501DC /* srcds-updater */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D2CBF3711F5D2BFE00A6F32A /* libsrcds-doi.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2CBF36A1F5D2B7B00A6F32A /* libsrcds-doi.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D2D0E6221F500D4E00323B19 /* libsrcds-csgo.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2D0E61A1F500BDD00323B19 /* libsrcds-csgo.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D2EC14831F456B87007D8110 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2EC14821F456B87007D8110 /* Carbon.framework */; };
@@ -68,6 +82,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D205965C269E88B2006DD288 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D23D5EC61F41F73800E69C78 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2D8D46A269E850D00A4B0D6;
+			remoteInfo = Sparkle;
+		};
 		D23D5EE21F41FA7B00E69C78 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D23D5EC61F41F73800E69C78 /* Project object */;
@@ -163,6 +184,7 @@
 			dstPath = Contents/MacOS;
 			dstSubfolderSpec = 1;
 			files = (
+				D2B09D19269FA9F000BDAC18 /* srcds-updater in CopyFiles */,
 				D23D5F091F42A74B00E69C78 /* srcds-macos in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,7 +225,6 @@
 			files = (
 				D26C2DA01F651B8700D70C4D /* dsa_pub.pem in CopyFiles */,
 				D26C2DA11F651B8700D70C4D /* srcds.sh in CopyFiles */,
-				D29913CD1F5EA1D70064BB64 /* srcds-updater in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,13 +234,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D26C2D8C1F651ADD00D70C4D /* SparkleCore.framework in CopyFiles */,
+				D2751DA9269E940100F38FFE /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D205965E269E88D2006DD288 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D23B282F1F43D84D0012BE0C /* IDetour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDetour.h; sourceTree = "<group>"; };
 		D23D5ECE1F41F73800E69C78 /* srcds-cli.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "srcds-cli.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D23D5EDB1F41F7CB00E69C78 /* srcds-macos */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "srcds-macos"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -239,7 +261,6 @@
 		D26C2D5A1F65196E00D70C4D /* SPUCommandLineUserDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPUCommandLineUserDriver.m; path = macos/SPUCommandLineUserDriver.m; sourceTree = "<group>"; };
 		D26C2D5B1F65196E00D70C4D /* SPUCommandLineUserDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPUCommandLineUserDriver.h; path = macos/SPUCommandLineUserDriver.h; sourceTree = "<group>"; };
 		D26C2D5C1F65196E00D70C4D /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = macos/main.m; sourceTree = "<group>"; };
-		D26C2D611F65197A00D70C4D /* SparkleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SparkleCore.framework; path = "srcds-updater/macos/Frameworks/SparkleCore.framework"; sourceTree = "<group>"; };
 		D26C2D661F6519C800D70C4D /* doi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = doi.h; path = macos/doi/doi.h; sourceTree = "<group>"; };
 		D26C2D671F6519C800D70C4D /* doi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = doi.cpp; path = macos/doi/doi.cpp; sourceTree = "<group>"; };
 		D26C2D6C1F6519E100D70C4D /* ins.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ins.cpp; path = macos/ins/ins.cpp; sourceTree = "<group>"; };
@@ -408,7 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D29913CF1F5F95910064BB64 /* AppKit.framework in Frameworks */,
-				D26C2D621F65197A00D70C4D /* SparkleCore.framework in Frameworks */,
+				D205965F269E88D2006DD288 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,9 +642,9 @@
 		D2EC14811F456B87007D8110 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D205965E269E88D2006DD288 /* Sparkle.framework */,
 				D29913CE1F5F95910064BB64 /* AppKit.framework */,
 				D2EC14821F456B87007D8110 /* Carbon.framework */,
-				D26C2D611F65197A00D70C4D /* SparkleCore.framework */,
 				D2EC14871F456E06007D8110 /* libcurl.tbd */,
 			);
 			name = Frameworks;
@@ -995,6 +1016,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D205965D269E88B2006DD288 /* PBXTargetDependency */,
 			);
 			name = "srcds-updater";
 			productName = "srcds-updater";
@@ -1092,6 +1114,9 @@
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
 					};
+					D2D8D46A269E850D00A4B0D6 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
 				};
 			};
 			buildConfigurationList = D23D5EC91F41F73800E69C78 /* Build configuration list for PBXProject "srcds-nx" */;
@@ -1099,6 +1124,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = D23D5EC51F41F73800E69C78;
@@ -1118,6 +1144,7 @@
 				D24F713B1F5CF90E003ED63B /* srcds-nd */,
 				D23D5EF41F42992300E69C78 /* srcds-sdk2013 */,
 				D28745991F653EE400A8F494 /* Clean */,
+				D2D8D46A269E850D00A4B0D6 /* Sparkle */,
 			);
 		};
 /* End PBXProject section */
@@ -1134,7 +1161,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif [ ! -e .git ] || ! which -s git; then\n  exit 0\nfi\n\n# Get git version based on most recent tag and strip version tag\ngitVersion=$(git describe --tags --match '[1-9].*')\ngitSuffix=${gitVersion#*-}\n\n# Plistbuddy is present at this path\nexport PATH=\"$PATH:/usr/libexec\"\n\ncd \"${TARGET_BUILD_DIR}\"\nln -sf srcds-cli.bundle/Contents/Resources/srcds.sh\nplistPath=srcds-cli.bundle/Contents/Info.plist\nversionNumber=$(PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$plistPath\")\nnewVersion=${versionNumber}-${gitSuffix}\noldVersion=$(PlistBuddy -c \"Print :CFBundleVersion\" \"$plistPath\")\nif [ \"$oldVersion\" != \"$newVersion\" ]; then\n  Plistbuddy -c \"Set :CFBundleVersion '$newVersion'\" \"$plistPath\"\nfi\nrm -f srcds-nx-$oldVersion.zip\nzip -r -X -y srcds-nx-$newVersion-mac.zip srcds-cli.bundle srcds.sh\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n  find . -name '*.dSYM' -exec find {} -name Info.plist \\; | xargs plutil -replace CFBundleVersion -string $newVersion\n  find . -name '*.dSYM' -exec find {} -name Info.plist \\; | xargs plutil -replace CFBundleShortVersionString -string $versionNumber\n  zip -r -X -y srcds-nx-$newVersion-mac-dsym.zip *.dSYM\nfi";
+			shellScript = "set -e\nif [ ! -e .git ] || ! which -s git; then\n  exit 0\nfi\n\n# Get git version based on most recent tag and strip version tag\ngitVersion=$(git describe --tags --match '[1-9].*')\ngitSuffix=${gitVersion#*-}\n\n# Plistbuddy is present at this path\nexport PATH=\"$PATH:/usr/libexec\"\n\ncd \"${TARGET_BUILD_DIR}\"\nln -sf srcds-cli.bundle/Contents/Resources/srcds.sh\nplistPath=srcds-cli.bundle/Contents/Info.plist\nversionNumber=$(PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$plistPath\")\nnewVersion=${versionNumber}-${gitSuffix}\noldVersion=$(PlistBuddy -c \"Print :CFBundleVersion\" \"$plistPath\")\nif [ \"$oldVersion\" != \"$newVersion\" ]; then\n  Plistbuddy -c \"Set :CFBundleVersion '$newVersion'\" \"$plistPath\"\nfi\nrm -f srcds-nx-$oldVersion.zip\nzip -r -X -y srcds-nx-$newVersion-mac.zip srcds-cli.bundle srcds.sh\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n  find . -name '*srcds*.dSYM' -exec find {} -name Info.plist \\; | xargs plutil -replace CFBundleVersion -string $newVersion\n  find . -name '*srcds*.dSYM' -exec find {} -name Info.plist \\; | xargs plutil -replace CFBundleShortVersionString -string $versionNumber\n  zip -r -X -y srcds-nx-$newVersion-mac-dsym.zip *.dSYM\nfi\n";
+		};
+		D2D8D46E269E852200A4B0D6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "xcodebuild -project srcds-updater/macos/sparkle/Sparkle.xcodeproj -scheme Sparkle -configuration ${CONFIGURATION} SPARKLE_BUILD_UI_BITS=0 BUILD_DIR=${BUILD_DIR}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1251,6 +1295,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D205965D269E88B2006DD288 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2D8D46A269E850D00A4B0D6 /* Sparkle */;
+			targetProxy = D205965C269E88B2006DD288 /* PBXContainerItemProxy */;
+		};
 		D23D5EE31F41FA7B00E69C78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D23D5EDA1F41F7CB00E69C78 /* srcds-macos */;
@@ -1317,10 +1366,7 @@
 					i386,
 					x86_64,
 				);
-				ARCHS_STANDARD_32_64_BIT = (
-					i386,
-					x86_64,
-				);
+				ARCHS_STANDARD_32_64_BIT = "i386 x86_64";
 				ARCHS_STANDARD_32_BIT = i386;
 				ARCHS_STANDARD_64_BIT = x86_64;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1385,16 +1431,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-                                ARCHS = (
-                                        i386,
-                                        x86_64,
-                                );
-                                ARCHS_STANDARD_32_64_BIT = (
-                                        i386,
-                                        x86_64,
-                                );
-                                ARCHS_STANDARD_32_BIT = i386;
-                                ARCHS_STANDARD_64_BIT = x86_64;
+				ARCHS = (
+					i386,
+					x86_64,
+				);
+				ARCHS_STANDARD_32_64_BIT = "i386 x86_64";
+				ARCHS_STANDARD_32_BIT = i386;
+				ARCHS_STANDARD_64_BIT = x86_64;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
@@ -1802,10 +1845,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/srcds-updater/macos/Frameworks",
+					"$(BUILD_DIR)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				HEADER_SEARCH_PATHS = (
+					public,
+					"srcds-updater/macos/sparkle",
+				);
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-Wl,-U,_objc_loadClassref";
@@ -1823,10 +1870,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/srcds-updater/macos/Frameworks",
+					"$(BUILD_DIR)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				HEADER_SEARCH_PATHS = (
+					public,
+					"srcds-updater/macos/sparkle",
+				);
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-Wl,-U,_objc_loadClassref";
@@ -1898,6 +1949,22 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		D2D8D46B269E850D00A4B0D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D2D8D46C269E850D00A4B0D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -2018,6 +2085,15 @@
 			buildConfigurations = (
 				D2D0E61C1F500BDD00323B19 /* Debug */,
 				D2D0E61D1F500BDD00323B19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D2D8D46D269E850D00A4B0D6 /* Build configuration list for PBXAggregateTarget "Sparkle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2D8D46B269E850D00A4B0D6 /* Debug */,
+				D2D8D46C269E850D00A4B0D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

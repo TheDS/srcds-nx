@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0940"
+   LastUpgradeVersion = "1130"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D23D5ECD1F41F73800E69C78"
-               BuildableName = "srcds-cli.bundle"
-               BlueprintName = "srcds-cli"
+               BlueprintIdentifier = "D2D8D46A269E850D00A4B0D6"
+               BuildableName = "Sparkle"
+               BlueprintName = "Sparkle"
                ReferencedContainer = "container:srcds-nx.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,15 +27,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D23D5ECD1F41F73800E69C78"
-            BuildableName = "srcds-cli.bundle"
-            BlueprintName = "srcds-cli"
-            ReferencedContainer = "container:srcds-nx.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
       </Testables>
    </TestAction>
@@ -43,22 +34,12 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      enableASanStackUseAfterReturn = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D23D5ECD1F41F73800E69C78"
-            BuildableName = "srcds-cli.bundle"
-            BlueprintName = "srcds-cli"
-            ReferencedContainer = "container:srcds-nx.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -69,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D23D5ECD1F41F73800E69C78"
-            BuildableName = "srcds-cli.bundle"
-            BlueprintName = "srcds-cli"
+            BlueprintIdentifier = "D2D8D46A269E850D00A4B0D6"
+            BuildableName = "Sparkle"
+            BlueprintName = "Sparkle"
             ReferencedContainer = "container:srcds-nx.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

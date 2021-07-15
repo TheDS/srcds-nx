@@ -26,12 +26,14 @@
 		<true/>
 	</dict>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2017 AlliedModders. All rights reserved.</string>
+	<string>Copyright © 2017-2021 AlliedModders. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
 	<string></string>
 	<key>SUFeedURL</key>
-	<string>http://ds.alliedmods.net/srcds-nx/appcast.xml</string>
+	<string>https://ds.alliedmods.net/srcds-nx/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
+	<key>SUPublicEDKey</key>
+	<string>Fc5zZyLDnKfX/9sHJRSoHkBx7AUvbowiq4vPspdzMyM=</string>
 </dict>
 </plist>

@@ -29,7 +29,7 @@
 // Code originally created by Mayur Pawashe (Copyright © 2016) from the Sparkle project
 
 #import <Foundation/Foundation.h>
-#import <SparkleCore/SparkleCore.h>
+#import <Sparkle/Sparkle.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
