@@ -42,7 +42,7 @@ pop_srcds_dir() {
 perform_update() {
 	if test $NO_SRCDS_UPDATE -eq 0; then
 		if test "Darwin" = `uname`; then
-			./srcds-cli.bundle/Contents/Resources/srcds-updater
+			./srcds-cli.bundle/Contents/MacOS/srcds-updater
 			if test $? -ne 0; then
 				echo "ERROR: Failed to update srcds binaries. Please manually update."
 				quit 1
