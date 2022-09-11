@@ -40,6 +40,8 @@ jobs:
           mv 10.13/Payload/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk MacOSX10.13.sdk
           rm -rf 10.13
           rm CLTools_SDK_macOS1013.pkg
+          cd MacOSX10.13.sdk
+          plutil -insert SupportedTargets -json '{"macosx": {"PlatformFamilyName": "macOS"}}' SDKSettings.plist
           
       - name: Configure Xcode to Build With 10.13 SDK
         run: |
@@ -48,8 +50,15 @@ jobs:
 
       - name: Configure Xcode to Allow i386 Arch Builds
         run: |
-          cd /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Xcode/PrivatePlugIns/IDEOSXSupportCore.ideplugin/Contents/Resources
-          sed -i bak 's/DeprecatedError[[:space:]]*=[[:space:]]*YES[[:space:]]*;/DeprecatedError = NO;/g' 'MacOSX Architectures.xcspec'
+          spec_file='MacOSX Architectures.xcspec'
+          spec_path1=/Applications/Xcode.app/Contents/PlugIns/XCBSpecifications.ideplugin/Contents/Resources
+          spec_path2=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Xcode/PrivatePlugIns/IDEOSXSupportCore.ideplugin/Contents/Resources
+          if [[ -e $spec_path1/$spec_file ]]; then
+            cd $spec_path1
+          else
+            cd $spec_path2
+          fi
+          sed -i .bak 's/DeprecatedError[[:space:]]*=[[:space:]]*YES[[:space:]]*;/DeprecatedError = NO;/g' "$spec_file"
 
       - name: Build with Xcode
         run: |
