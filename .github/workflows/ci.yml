@@ -16,17 +16,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          submodules: recursive
-          
-      - name: Fetch Tags
-        run: git fetch --tags --force
-        
       - name: Restore MacOS SDK from Cache
         id: cache-mac-sdk
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with: 
           path: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
           key: mac-sdk-10.13
@@ -60,18 +52,27 @@ jobs:
           fi
           sed -i .bak 's/DeprecatedError[[:space:]]*=[[:space:]]*YES[[:space:]]*;/DeprecatedError = NO;/g' "$spec_file"
 
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Fetch Tags
+        run: git fetch --tags --force
+
       - name: Build with Xcode
         run: |
           xcodebuild
           
       - name: Archive Package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Binaries
           path: build/Release/srcds-nx-*-mac.zip
           
       - name: Archive Debug Symbols
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Debug Symbols
           path: build/Release/srcds-nx-*-dsym.zip
